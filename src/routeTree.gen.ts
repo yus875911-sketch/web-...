@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as CustomerRouteImport } from './routes/customer'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as CustomerIndexRouteImport } from './routes/customer.index'
 import { Route as CustomerConfirmRouteImport } from './routes/customer.confirm'
 import { Route as CustomerOrdersRouteImport } from './routes/customer.orders'
@@ -34,6 +35,11 @@ const CustomerRoute = CustomerRouteImport.update({
   id: '/customer',
   path: '/customer',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const CustomerIndexRoute = CustomerIndexRouteImport.update({
   id: '/',
@@ -73,37 +79,39 @@ const CustomerOrderIdRoute = CustomerOrderIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/customer': typeof CustomerRouteWithChildren
   '/customer/confirm': typeof CustomerConfirmRoute
   '/customer/orders': typeof CustomerOrdersRoute
   '/customer/pay': typeof CustomerPayRoute
   '/customer/result': typeof CustomerResultRoute
   '/customer/success': typeof CustomerSuccessRoute
+  '/admin/': typeof AdminIndexRoute
   '/customer/': typeof CustomerIndexRoute
   '/customer/order/$id': typeof CustomerOrderIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/customer/confirm': typeof CustomerConfirmRoute
   '/customer/orders': typeof CustomerOrdersRoute
   '/customer/pay': typeof CustomerPayRoute
   '/customer/result': typeof CustomerResultRoute
   '/customer/success': typeof CustomerSuccessRoute
+  '/admin': typeof AdminIndexRoute
   '/customer': typeof CustomerIndexRoute
   '/customer/order/$id': typeof CustomerOrderIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/customer': typeof CustomerRouteWithChildren
   '/customer/confirm': typeof CustomerConfirmRoute
   '/customer/orders': typeof CustomerOrdersRoute
   '/customer/pay': typeof CustomerPayRoute
   '/customer/result': typeof CustomerResultRoute
   '/customer/success': typeof CustomerSuccessRoute
+  '/admin/': typeof AdminIndexRoute
   '/customer/': typeof CustomerIndexRoute
   '/customer/order/$id': typeof CustomerOrderIdRoute
 }
@@ -118,17 +126,18 @@ export interface FileRouteTypes {
     | '/customer/pay'
     | '/customer/result'
     | '/customer/success'
+    | '/admin/'
     | '/customer/'
     | '/customer/order/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/customer/confirm'
     | '/customer/orders'
     | '/customer/pay'
     | '/customer/result'
     | '/customer/success'
+    | '/admin'
     | '/customer'
     | '/customer/order/$id'
   id:
@@ -141,13 +150,14 @@ export interface FileRouteTypes {
     | '/customer/pay'
     | '/customer/result'
     | '/customer/success'
+    | '/admin/'
     | '/customer/'
     | '/customer/order/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   CustomerRoute: typeof CustomerRouteWithChildren
 }
 
@@ -173,6 +183,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/customer'
       preLoaderRoute: typeof CustomerRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/customer/': {
       id: '/customer/'
@@ -226,6 +243,16 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 interface CustomerRouteChildren {
   CustomerConfirmRoute: typeof CustomerConfirmRoute
   CustomerOrdersRoute: typeof CustomerOrdersRoute
@@ -252,7 +279,7 @@ const CustomerRouteWithChildren = CustomerRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   CustomerRoute: CustomerRouteWithChildren,
 }
 export const routeTree = rootRouteImport
