@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CustomerRouteImport } from './routes/customer'
 import { Route as CustomerIndexRouteImport } from './routes/customer.index'
 import { Route as CustomerConfirmRouteImport } from './routes/customer.confirm'
+import { Route as CustomerOrdersRouteImport } from './routes/customer.orders'
 import { Route as CustomerPayRouteImport } from './routes/customer.pay'
 import { Route as CustomerResultRouteImport } from './routes/customer.result'
 import { Route as CustomerSuccessRouteImport } from './routes/customer.success'
@@ -37,6 +38,11 @@ const CustomerConfirmRoute = CustomerConfirmRouteImport.update({
   path: '/confirm',
   getParentRoute: () => CustomerRoute,
 } as any)
+const CustomerOrdersRoute = CustomerOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => CustomerRoute,
+} as any)
 const CustomerPayRoute = CustomerPayRouteImport.update({
   id: '/pay',
   path: '/pay',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/customer': typeof CustomerRouteWithChildren
   '/customer/confirm': typeof CustomerConfirmRoute
+  '/customer/orders': typeof CustomerOrdersRoute
   '/customer/pay': typeof CustomerPayRoute
   '/customer/result': typeof CustomerResultRoute
   '/customer/success': typeof CustomerSuccessRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/customer/confirm': typeof CustomerConfirmRoute
+  '/customer/orders': typeof CustomerOrdersRoute
   '/customer/pay': typeof CustomerPayRoute
   '/customer/result': typeof CustomerResultRoute
   '/customer/success': typeof CustomerSuccessRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/customer': typeof CustomerRouteWithChildren
   '/customer/confirm': typeof CustomerConfirmRoute
+  '/customer/orders': typeof CustomerOrdersRoute
   '/customer/pay': typeof CustomerPayRoute
   '/customer/result': typeof CustomerResultRoute
   '/customer/success': typeof CustomerSuccessRoute
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
     | '/'
     | '/customer'
     | '/customer/confirm'
+    | '/customer/orders'
     | '/customer/pay'
     | '/customer/result'
     | '/customer/success'
@@ -94,6 +104,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/customer/confirm'
+    | '/customer/orders'
     | '/customer/pay'
     | '/customer/result'
     | '/customer/success'
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
     | '/'
     | '/customer'
     | '/customer/confirm'
+    | '/customer/orders'
     | '/customer/pay'
     | '/customer/result'
     | '/customer/success'
@@ -144,6 +156,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CustomerConfirmRouteImport
       parentRoute: typeof CustomerRoute
     }
+    '/customer/orders': {
+      id: '/customer/orders'
+      path: '/orders'
+      fullPath: '/customer/orders'
+      preLoaderRoute: typeof CustomerOrdersRouteImport
+      parentRoute: typeof CustomerRoute
+    }
     '/customer/pay': {
       id: '/customer/pay'
       path: '/pay'
@@ -170,6 +189,7 @@ declare module '@tanstack/react-router' {
 
 interface CustomerRouteChildren {
   CustomerConfirmRoute: typeof CustomerConfirmRoute
+  CustomerOrdersRoute: typeof CustomerOrdersRoute
   CustomerPayRoute: typeof CustomerPayRoute
   CustomerResultRoute: typeof CustomerResultRoute
   CustomerSuccessRoute: typeof CustomerSuccessRoute
@@ -178,6 +198,7 @@ interface CustomerRouteChildren {
 
 const CustomerRouteChildren: CustomerRouteChildren = {
   CustomerConfirmRoute: CustomerConfirmRoute,
+  CustomerOrdersRoute: CustomerOrdersRoute,
   CustomerPayRoute: CustomerPayRoute,
   CustomerResultRoute: CustomerResultRoute,
   CustomerSuccessRoute: CustomerSuccessRoute,
