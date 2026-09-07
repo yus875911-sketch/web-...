@@ -17,6 +17,7 @@ import { Route as CustomerOrdersRouteImport } from './routes/customer.orders'
 import { Route as CustomerPayRouteImport } from './routes/customer.pay'
 import { Route as CustomerResultRouteImport } from './routes/customer.result'
 import { Route as CustomerSuccessRouteImport } from './routes/customer.success'
+import { Route as CustomerOrderIdRouteImport } from './routes/customer.order.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -58,6 +59,11 @@ const CustomerSuccessRoute = CustomerSuccessRouteImport.update({
   path: '/success',
   getParentRoute: () => CustomerRoute,
 } as any)
+const CustomerOrderIdRoute = CustomerOrderIdRouteImport.update({
+  id: '/order/$id',
+  path: '/order/$id',
+  getParentRoute: () => CustomerRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -68,6 +74,7 @@ export interface FileRoutesByFullPath {
   '/customer/result': typeof CustomerResultRoute
   '/customer/success': typeof CustomerSuccessRoute
   '/customer/': typeof CustomerIndexRoute
+  '/customer/order/$id': typeof CustomerOrderIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -77,6 +84,7 @@ export interface FileRoutesByTo {
   '/customer/result': typeof CustomerResultRoute
   '/customer/success': typeof CustomerSuccessRoute
   '/customer': typeof CustomerIndexRoute
+  '/customer/order/$id': typeof CustomerOrderIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/customer/result': typeof CustomerResultRoute
   '/customer/success': typeof CustomerSuccessRoute
   '/customer/': typeof CustomerIndexRoute
+  '/customer/order/$id': typeof CustomerOrderIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
     | '/customer/result'
     | '/customer/success'
     | '/customer/'
+    | '/customer/order/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
     | '/customer/result'
     | '/customer/success'
     | '/customer'
+    | '/customer/order/$id'
   id:
     | '__root__'
     | '/'
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/customer/result'
     | '/customer/success'
     | '/customer/'
+    | '/customer/order/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -184,6 +196,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CustomerSuccessRouteImport
       parentRoute: typeof CustomerRoute
     }
+    '/customer/order/$id': {
+      id: '/customer/order/$id'
+      path: '/order/$id'
+      fullPath: '/customer/order/$id'
+      preLoaderRoute: typeof CustomerOrderIdRouteImport
+      parentRoute: typeof CustomerRoute
+    }
   }
 }
 
@@ -194,6 +213,7 @@ interface CustomerRouteChildren {
   CustomerResultRoute: typeof CustomerResultRoute
   CustomerSuccessRoute: typeof CustomerSuccessRoute
   CustomerIndexRoute: typeof CustomerIndexRoute
+  CustomerOrderIdRoute: typeof CustomerOrderIdRoute
 }
 
 const CustomerRouteChildren: CustomerRouteChildren = {
@@ -203,6 +223,7 @@ const CustomerRouteChildren: CustomerRouteChildren = {
   CustomerResultRoute: CustomerResultRoute,
   CustomerSuccessRoute: CustomerSuccessRoute,
   CustomerIndexRoute: CustomerIndexRoute,
+  CustomerOrderIdRoute: CustomerOrderIdRoute,
 }
 
 const CustomerRouteWithChildren = CustomerRoute._addFileChildren(
