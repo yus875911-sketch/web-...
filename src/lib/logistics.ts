@@ -39,7 +39,7 @@ const KEY_DRAFT = "lg_draft";
 const rid = () => Math.random().toString(36).slice(2, 9);
 
 function seedPrices(): RegionPrice[] {
-  const table: [string, number[][], number][] = [
+  const table: [string, [number, number, number][], number][] = [
     ["广东省", [[0, 1, 6], [1, 3, 8], [3, 5, 12], [5, 10, 18]], 1.5],
     ["江浙沪", [[0, 1, 5], [1, 3, 7], [3, 5, 10], [5, 10, 15]], 1.2],
     ["新疆", [[0, 1, 15], [1, 3, 22], [3, 5, 35], [5, 10, 55]], 6],
@@ -56,7 +56,7 @@ function seedPrices(): RegionPrice[] {
         extraPerKg: 0,
       });
     }
-    const last = brackets[brackets.length - 1];
+    const last = brackets[brackets.length - 1]!;
     rows.push({
       id: rid(),
       region,
@@ -197,14 +197,13 @@ export function quote(
   const quotedWeight = Math.max(weight, volumetricWeight);
   if (!(quotedWeight > 0)) return { ok: false, message: "请填写有效的重量" };
 
-  const row =
-    rows.find(
+  const row = (rows.find(
       (r) =>
         quotedWeight > r.bracketMin &&
         (r.bracketMax === null || quotedWeight <= r.bracketMax),
     ) ??
     rows.find((r) => r.bracketMin === 0 && r.bracketMax !== null && quotedWeight <= r.bracketMax) ??
-    rows[rows.length - 1];
+    rows[rows.length - 1])!;
 
   let amount = row.basePrice;
   let detail = `${row.bracketMin}-${row.bracketMax ?? "以上"}kg 基础价 ${row.basePrice} 元`;
