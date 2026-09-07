@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CustomerRouteImport } from './routes/customer'
 import { Route as CustomerIndexRouteImport } from './routes/customer.index'
 import { Route as CustomerConfirmRouteImport } from './routes/customer.confirm'
+import { Route as CustomerPayRouteImport } from './routes/customer.pay'
 import { Route as CustomerResultRouteImport } from './routes/customer.result'
 
 const IndexRoute = IndexRouteImport.update({
@@ -35,6 +36,11 @@ const CustomerConfirmRoute = CustomerConfirmRouteImport.update({
   path: '/confirm',
   getParentRoute: () => CustomerRoute,
 } as any)
+const CustomerPayRoute = CustomerPayRouteImport.update({
+  id: '/pay',
+  path: '/pay',
+  getParentRoute: () => CustomerRoute,
+} as any)
 const CustomerResultRoute = CustomerResultRouteImport.update({
   id: '/result',
   path: '/result',
@@ -45,12 +51,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/customer': typeof CustomerRouteWithChildren
   '/customer/confirm': typeof CustomerConfirmRoute
+  '/customer/pay': typeof CustomerPayRoute
   '/customer/result': typeof CustomerResultRoute
   '/customer/': typeof CustomerIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/customer/confirm': typeof CustomerConfirmRoute
+  '/customer/pay': typeof CustomerPayRoute
   '/customer/result': typeof CustomerResultRoute
   '/customer': typeof CustomerIndexRoute
 }
@@ -59,20 +67,32 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/customer': typeof CustomerRouteWithChildren
   '/customer/confirm': typeof CustomerConfirmRoute
+  '/customer/pay': typeof CustomerPayRoute
   '/customer/result': typeof CustomerResultRoute
   '/customer/': typeof CustomerIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/customer' | '/customer/confirm' | '/customer/result' | '/customer/'
+    | '/'
+    | '/customer'
+    | '/customer/confirm'
+    | '/customer/pay'
+    | '/customer/result'
+    | '/customer/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/customer/confirm' | '/customer/result' | '/customer'
+  to:
+    | '/'
+    | '/customer/confirm'
+    | '/customer/pay'
+    | '/customer/result'
+    | '/customer'
   id:
     | '__root__'
     | '/'
     | '/customer'
     | '/customer/confirm'
+    | '/customer/pay'
     | '/customer/result'
     | '/customer/'
   fileRoutesById: FileRoutesById
@@ -112,6 +132,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CustomerConfirmRouteImport
       parentRoute: typeof CustomerRoute
     }
+    '/customer/pay': {
+      id: '/customer/pay'
+      path: '/pay'
+      fullPath: '/customer/pay'
+      preLoaderRoute: typeof CustomerPayRouteImport
+      parentRoute: typeof CustomerRoute
+    }
     '/customer/result': {
       id: '/customer/result'
       path: '/result'
@@ -124,12 +151,14 @@ declare module '@tanstack/react-router' {
 
 interface CustomerRouteChildren {
   CustomerConfirmRoute: typeof CustomerConfirmRoute
+  CustomerPayRoute: typeof CustomerPayRoute
   CustomerResultRoute: typeof CustomerResultRoute
   CustomerIndexRoute: typeof CustomerIndexRoute
 }
 
 const CustomerRouteChildren: CustomerRouteChildren = {
   CustomerConfirmRoute: CustomerConfirmRoute,
+  CustomerPayRoute: CustomerPayRoute,
   CustomerResultRoute: CustomerResultRoute,
   CustomerIndexRoute: CustomerIndexRoute,
 }
