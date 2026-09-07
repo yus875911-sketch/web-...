@@ -15,6 +15,7 @@ import { Route as CustomerIndexRouteImport } from './routes/customer.index'
 import { Route as CustomerConfirmRouteImport } from './routes/customer.confirm'
 import { Route as CustomerPayRouteImport } from './routes/customer.pay'
 import { Route as CustomerResultRouteImport } from './routes/customer.result'
+import { Route as CustomerSuccessRouteImport } from './routes/customer.success'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +47,11 @@ const CustomerResultRoute = CustomerResultRouteImport.update({
   path: '/result',
   getParentRoute: () => CustomerRoute,
 } as any)
+const CustomerSuccessRoute = CustomerSuccessRouteImport.update({
+  id: '/success',
+  path: '/success',
+  getParentRoute: () => CustomerRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -53,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/customer/confirm': typeof CustomerConfirmRoute
   '/customer/pay': typeof CustomerPayRoute
   '/customer/result': typeof CustomerResultRoute
+  '/customer/success': typeof CustomerSuccessRoute
   '/customer/': typeof CustomerIndexRoute
 }
 export interface FileRoutesByTo {
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/customer/confirm': typeof CustomerConfirmRoute
   '/customer/pay': typeof CustomerPayRoute
   '/customer/result': typeof CustomerResultRoute
+  '/customer/success': typeof CustomerSuccessRoute
   '/customer': typeof CustomerIndexRoute
 }
 export interface FileRoutesById {
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/customer/confirm': typeof CustomerConfirmRoute
   '/customer/pay': typeof CustomerPayRoute
   '/customer/result': typeof CustomerResultRoute
+  '/customer/success': typeof CustomerSuccessRoute
   '/customer/': typeof CustomerIndexRoute
 }
 export interface FileRouteTypes {
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
     | '/customer/confirm'
     | '/customer/pay'
     | '/customer/result'
+    | '/customer/success'
     | '/customer/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -86,6 +96,7 @@ export interface FileRouteTypes {
     | '/customer/confirm'
     | '/customer/pay'
     | '/customer/result'
+    | '/customer/success'
     | '/customer'
   id:
     | '__root__'
@@ -94,6 +105,7 @@ export interface FileRouteTypes {
     | '/customer/confirm'
     | '/customer/pay'
     | '/customer/result'
+    | '/customer/success'
     | '/customer/'
   fileRoutesById: FileRoutesById
 }
@@ -146,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CustomerResultRouteImport
       parentRoute: typeof CustomerRoute
     }
+    '/customer/success': {
+      id: '/customer/success'
+      path: '/success'
+      fullPath: '/customer/success'
+      preLoaderRoute: typeof CustomerSuccessRouteImport
+      parentRoute: typeof CustomerRoute
+    }
   }
 }
 
@@ -153,6 +172,7 @@ interface CustomerRouteChildren {
   CustomerConfirmRoute: typeof CustomerConfirmRoute
   CustomerPayRoute: typeof CustomerPayRoute
   CustomerResultRoute: typeof CustomerResultRoute
+  CustomerSuccessRoute: typeof CustomerSuccessRoute
   CustomerIndexRoute: typeof CustomerIndexRoute
 }
 
@@ -160,6 +180,7 @@ const CustomerRouteChildren: CustomerRouteChildren = {
   CustomerConfirmRoute: CustomerConfirmRoute,
   CustomerPayRoute: CustomerPayRoute,
   CustomerResultRoute: CustomerResultRoute,
+  CustomerSuccessRoute: CustomerSuccessRoute,
   CustomerIndexRoute: CustomerIndexRoute,
 }
 
